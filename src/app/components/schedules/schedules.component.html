@@ -1,0 +1,54 @@
+<div class="schedulesWrapper">
+  <div class="row">
+    <div class="col-md-2">
+      Select Facility:
+    </div>
+    <div class="col">
+      <select name="locations" [(ngModel)]="selectedFacility" >
+        <option *ngFor="let l of locations" [value]="l" [innerHTML]="l.facilityName" ></option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      Week Start Date:
+    </div>
+    <div class="col">
+      <form class="form-inline">
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd"
+                      name="dp" [(ngModel)]="weekStartDate" ngbDatepicker #d="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                    <i class="fa fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="offset-md-2 col-md-2">
+      <button class="btn btn-primary float-left" (click)="viewSchedule()" [innerHTML]="getRunWording()" ></button>
+    </div>
+  </div>
+</div>
+
+<div class="row export" *ngIf="schedule && schedule.length" >
+  <div class="col-md-12">
+    <a class="float-right" (click)="export(myTable)" type="button">
+        <i class="fa fa-file-excel"></i>
+        Export
+    </a>
+  </div>
+</div>
+<div class="row schedule" *ngIf="schedule.length && showMessage" >
+  <div class="col">
+    <span class="ruhRoh">*Indicates less than 2 Anesthesiologists are available for the day</span>
+  </div>
+</div>
+<div class="schedule" [hidden]="!schedule.length">
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data"></generic-table>
+</div>
